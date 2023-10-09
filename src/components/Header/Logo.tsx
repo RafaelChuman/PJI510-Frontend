@@ -5,7 +5,7 @@ export function Logo() {
   return (
     <div className="LogoDiv">
       <p className="LogoContent">
-        <RiReactjsLine/>PJI410<span>.</span>
+        <RiReactjsLine/>PJI510<span>.</span>
       </p>
     </div>
   );

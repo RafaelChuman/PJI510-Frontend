@@ -85,7 +85,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   let [nameProvider, setNameProvider] = useState<string>("");
 
   useEffect(() => {
-    const userName = localStorage.getItem("pji340.userName")
+    const userName = localStorage.getItem("pji510.userName")
     authChanel = new BroadcastChannel("auth");
 
     if (userName) {
@@ -127,8 +127,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         user: response.token.data.user,
       });
 
-      localStorage.setItem("pji340.token", response.token.data.token);
-      localStorage.setItem("pji340.userName", response.token.data.user.userName);
+      localStorage.setItem("pji510.token", response.token.data.token);
+      localStorage.setItem("pji510.userName", response.token.data.user.userName);
 
       authChanel.postMessage("signIn");
     }

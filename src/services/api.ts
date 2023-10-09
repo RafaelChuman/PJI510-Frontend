@@ -5,18 +5,16 @@ export function setupAPIClient() {
 
 
   const api: AxiosInstance = axios.create({
-    //baseURL: "https://pji340.onrender.com/",
-    //baseURL: "https://pji340.herokuapp.com/",
-    // baseURL: "http://127.0.0.1:3333/",
-    baseURL: "https://pji410-backend.onrender.com",
+    baseURL: "http://127.0.0.1:3333/",
+    //baseURL: "https://pji510-backend.onrender.com",
     headers: {
-      authorization: localStorage.getItem("pji340.token"),
+      authorization: localStorage.getItem("pji540.token"),
     },
   });
 
   api.interceptors.request.use((resp) => {
 
-    const token = localStorage.getItem("pji340.token");
+    const token = localStorage.getItem("pji510.token");
 
     if (resp) {
       if (resp.headers) {
