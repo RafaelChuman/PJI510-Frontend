@@ -339,7 +339,7 @@ export default createGlobalStyle`
     transition: all 0.2s, transform 0.3s ease-in-out;
   }
 
-  input[type="checkbox"]:checked, input[type="checkbox"]:hover  {
+  input[type="checkbox"]:checked  {
     
     width: ${theme.lineHeights["1.25rem"]};
     height: ${theme.lineHeights["1.25rem"]};
@@ -348,9 +348,6 @@ export default createGlobalStyle`
     /* background: ${theme.colors.pink[200]}; */
 
     box-shadow: inset ${theme.lineHeights["1.25rem"]} ${theme.lineHeights["1.25rem"]} ${theme.colors.pink[200]};
-  }
-
-  input[type="checkbox"]:checked{
 
     background: ${theme.colors.white};
 

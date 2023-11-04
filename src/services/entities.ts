@@ -5,72 +5,37 @@ export interface User {
   name: string;
   userName: string;
   password: string;
-  cep: string;
-  numberAddress: string;
-  cellphone: string;
-  whatsApp: string;
-  created_at: string;
+  imgPath: string;
+  email: string;
+  celular: number;
+  telegram: string;
   isAdmin: boolean;
-}
-
-export interface OilMonitor {
-  id: string;
-  oilLevel: number;
   createdAt: Date;
-  er: ERs;
 }
 
-export interface LubrificationSystems {
-  id: string;
-  createdAt: Date;
-  add: number;
-  obs?: string;
-  activity: Activities;
-  collaborator: Collaborators;
-  er: ERs;
-}
-
-export interface ERs {
-  id: string;
-  number: number;
-  createdAt: Date;
-  zone: Zones;
-}
-
-export interface Zones {
+export interface Group {
   id: string;
   name: string;
+  temperature: number;
+  humidity: number;
+  noBreak: number;
+  User: User;
   createdAt: Date;
 }
 
-export interface Collaborators {
-  id: string;
-  name: string;
-  cep: string;
-  numberAddress: string;
-  cellphone: string;
-  whatsApp: string;
-  createdAt: Date;
+export interface getEntityParams {
+  name: "user" | "group";
+  whereData?: { [key: string]: string };
 }
 
-export interface Activities {
-  id: string;
-  name: string;
-  createdAt: Date;
-}
-
-
-export interface  getEntityParams{
-  name: "oilMonitor"| "lubrificationSystems"| "ers"|"zones"| "collaborators" |"activities";
-  whereData:{ [key: string]: string }
-};
-
-export async function getEntitie<Type>( {name, whereData}: getEntityParams): Promise<Type[]> {
+export async function getEntitie<Type>({
+  name,
+  whereData,
+}: getEntityParams): Promise<Type[]> {
   
-  const {where} = whereData;
   const { data } = await api.get<Type[]>(name, {
     params: {
-      ...whereData
+      ...whereData,
     },
   });
 

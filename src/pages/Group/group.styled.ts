@@ -20,10 +20,10 @@ export const Container = styled.div`
     padding: 5px;
   }
 
-  .ZoneTableContent{
+  .groupTableContent{
     padding-top:48px;
   }
-  .zonaContent{
+  .groupContent{
     align-items: center;
     justify-content: center;
     width: 100%;

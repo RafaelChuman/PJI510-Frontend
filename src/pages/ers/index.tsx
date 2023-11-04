@@ -9,11 +9,9 @@ import { queryClient } from "@/services/queryClient";
 import { useERs } from "@/services/hooks/useERs";
 import { Container } from "./ers.styled";
 import { ERTable } from "@/components/ers/ERTable";
-import { useZones } from "@/services/hooks/useZones";
 import { ComboBox } from "@/components/ComboBox";
 import EditERsComponent from "./editERs";
 import { RiCloseFill, RiAddFill } from "react-icons/ri";
-import { ERs } from "@/services/entities";
 
 export default function ERsComponent() {
   const numberOfItensPerPage = 5;

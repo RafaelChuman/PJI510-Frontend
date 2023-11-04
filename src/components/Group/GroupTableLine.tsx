@@ -1,23 +1,23 @@
 import { SetStateAction } from "react";
 import { RiPencilLine } from "react-icons/ri";
 import { Checkbox } from "../CheckBox";
-import { Zones } from "@/services/entities";
 import { convertToDateBR } from "@/services/utils";
+import { Group } from "@/services/entities";
 
 interface TableLineProps {
-  zone: Zones | undefined;
+  group: Group | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
-  SetZone: (value: SetStateAction<Zones | undefined>) => void;
+  setGroup: (value: SetStateAction<Group | undefined>) => void;
 }
 
-export function ZoneTableLine({
-  zone,
+export function GroupTableLine({
+  group,
   checkBoxValues,
   setCheckBoxValues,
-  SetZone,
+  setGroup,
 }: TableLineProps) {
-  if (!zone) {
+  if (!group) {
     return <></>;
   }
 
@@ -28,16 +28,18 @@ export function ZoneTableLine({
           type={"checkbox"}
           title={"Deletar"}
           placeholder={"Deletar"}
-          dataOfCheckbox={zone}
-          name="ZoneTable"
+          dataOfCheckbox={group}
+          name="groupTable"
           checkBoxValues={checkBoxValues}
           setCheckBoxValues={setCheckBoxValues}
         ></Checkbox>
       </td>
-      <td>{zone.name}</td>
-      <td>{convertToDateBR(zone.createdAt)}</td>
+      <td>{group.name}</td>
+      <td>{group.humidity}</td>
+      <td>{group.temperature}</td>
+      <td>{group.noBreak}</td>
       <td>
-        <button onClick={() => SetZone(zone)}>
+        <button onClick={() => setGroup(group)}>
           <RiPencilLine></RiPencilLine>
           &nbsp; Editar
         </button>

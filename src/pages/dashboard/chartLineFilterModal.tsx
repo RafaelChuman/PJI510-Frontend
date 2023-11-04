@@ -1,8 +1,6 @@
 import { ComboBoxMultiple } from "@/components/ComboBoxMultiple";
 import { DateInput } from "@/components/DateInput";
-import { useZones } from "@/services/hooks/useZones";
 import { ModalContainer } from "./dashboard.styled";
-import { Zones } from "@/services/entities";
 import React from "react";
 
 export interface GraphiclOilUsed {

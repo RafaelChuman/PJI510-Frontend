@@ -12,26 +12,29 @@ import {
 export function SideBar() {
   return (
     <Container>
-      <NavSection title="Manutenção">
-        <NavLinkComponent href="/dashboard" icon={RiDashboardLine} navComponent="Dashboard" />
+      <NavSection title="IoT">
         <NavLinkComponent
-          href="/ers"
-          icon={RiHome2Line}
-          navComponent="ER's"
+          href="/user"
+          icon={RiHealthBookLine}
+          navComponent="Usuários"
         />
+        <NavLinkComponent
+          href="/Group"
+          icon={RiDashboardLine}
+          navComponent="Grupos"
+        />
+        <NavLinkComponent href="/ers" icon={RiHome2Line} navComponent="ER's" />
 
-        <NavLinkComponent href="/zones" icon={RiInputMethodLine} navComponent="Zonas" />
+        <NavLinkComponent
+          href="/zones"
+          icon={RiInputMethodLine}
+          navComponent="Zonas"
+        />
         <NavLinkComponent
           href="/activities"
           icon={RiGitMergeLine}
           navComponent="Atividades"
         />
-        <NavLinkComponent
-          href="/collaborators"
-          icon={RiHealthBookLine}
-          navComponent="Colaboradores"
-        />
-                
       </NavSection>
     </Container>
   );

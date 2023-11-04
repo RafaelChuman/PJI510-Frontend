@@ -8,7 +8,7 @@ export function setupAPIClient() {
     baseURL: "http://127.0.0.1:3333/",
     //baseURL: "https://pji510-backend.onrender.com",
     headers: {
-      authorization: localStorage.getItem("pji540.token"),
+      authorization: localStorage.getItem("pji510.token"),
     },
   });
 

@@ -11,9 +11,7 @@ import { useActivities } from "@/services/hooks/useActivity";
 import { LubrificationSystemTable } from "@/components/lubrificationSystem/LubrificationSystemTable";
 import { ComboBox } from "@/components/ComboBox";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
-import { ERs, LubrificationSystems } from "@/services/entities";
 import { useLubrificationSystemsByErId } from "@/services/hooks/useLubrificationSystems";
-import { useCollaborators } from "@/services/hooks/useCollaborators";
 
 export default function LubrificationSystemsComponent(er: ERs) {
   const numberOfItensPerPage = 5;

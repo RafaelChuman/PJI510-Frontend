@@ -18,8 +18,6 @@ import {
 import ChartBar, { dataOfChartBar } from "@/components/ChartBar";
 import ChartLined, { dataOfChartLined } from "@/components/ChartLined";
 import ChartPie from "@/components/ChartPie";
-import { useZones } from "@/services/hooks/useZones";
-import { Zones } from "@/services/entities";
 
 let gofInitialValue = {
   dateBegin: new Date(),

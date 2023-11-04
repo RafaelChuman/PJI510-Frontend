@@ -5,32 +5,28 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../api";
 import { User } from "../entities";
 
-
 export interface TokenError {
   message: string;
 }
 
-export interface Token {
-  user: UserAuthCredentials;
-  token: string;
+export interface UserToken {
+  userId: string;
+  userName: string;
+  isAdmin: boolean;
 }
 
 export interface AuthResponse {
-  token: AxiosResponse<Token> | void;
+  token: AxiosResponse | void;
   tokenError: AxiosError<TokenError> | void;
 }
 
 type AuthContextData = {
-  SignIn(credentials: UserAuthCredentials): Promise<AuthResponse>;
+  SignIn(credentials: UserSignInCredentials): Promise<AuthResponse>;
   isAuthenticated: boolean;
-  userToken: Token | undefined;
+  userToken: UserToken | undefined;
   userNameProvider: string;
   nameProvider: string;
 };
-
-export interface UserAuthCredentials {
-  userName: string;
-}
 
 export interface UserSignInCredentials {
   userName: string;
@@ -58,13 +54,16 @@ export async function getToken({
   responseToken.tokenError = undefined;
 
   const resp = await api
-    .post<Token>("/", {
+    .post("/", {
       userName: userName,
       password: password,
     })
     .catch((error) => {
       responseToken.tokenError = error;
+      console.log(error)
     });
+
+    console.log(resp)
 
   responseToken.token = resp;
 
@@ -79,13 +78,13 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate();
-  const [userToken, setUserToken] = useState<Token>();
+  const [userToken, setUserToken] = useState<UserToken>();
   const isAuthenticated = !!userToken;
   let [userNameProvider, setUserNameProvider] = useState<string>("");
   let [nameProvider, setNameProvider] = useState<string>("");
 
   useEffect(() => {
-    const userName = localStorage.getItem("pji510.userName")
+    const userName = localStorage.getItem("pji510.userName");
     authChanel = new BroadcastChannel("auth");
 
     if (userName) {
@@ -106,7 +105,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         case "signOut":
           setUserNameProvider("");
           setNameProvider("");
-          setUserToken({ token: "", user: { userName: "" } });
+          setUserToken({
+            userName: "",
+            isAdmin: false,
+            userId: "",
+          });
           navigate("/");
           break;
         case "signIn":
@@ -123,12 +126,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     if (response.token) {
       setUserToken({
-        token: response.token.data.token,
-        user: response.token.data.user,
+        userName: response.token.data.userName,
+        userId: response.token.data.userId,
+        isAdmin: response.token.data.isAdmin,
       });
 
-      localStorage.setItem("pji510.token", response.token.data.token);
-      localStorage.setItem("pji510.userName", response.token.data.user.userName);
+      localStorage.setItem("pji510.token", response.token.data);
 
       authChanel.postMessage("signIn");
     }
@@ -149,8 +152,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     </AuthContext.Provider>
   );
 }
-
-
 
 export function useAuthenticateMutation() {
   return useMutation(getToken);

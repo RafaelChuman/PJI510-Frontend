@@ -1,50 +1,51 @@
+import { User } from "@/services/entities";
 import { SetStateAction } from "react";
-
-import { ZoneTableLine } from "./ZoneTableLine";
-import { Zones } from "@/services/entities";
+import { UserTableLine } from "./UserTableLine";
 
 interface UserTableProps {
-  zoneData: Zones[] | undefined;
+  userData: User[] | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
-  SetZone: (value: SetStateAction<Zones | undefined>) => void;
+  setUser: (value: SetStateAction<User | undefined>) => void;
 }
 
-export function ZoneTable({
-  zoneData,
+export function UserTable({
+  userData,
   checkBoxValues,
   setCheckBoxValues,
-  SetZone,
+  setUser,
 }: UserTableProps) {
   return (
     <table>
       <thead>
         <tr>
           <th></th>
-          <th>Zona</th>
-          <th>Data de Cadastro</th>
-          <th> </th>
+          <th>Nome</th>
+          <th>Telegram</th>
+          <th>Data Criação</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {zoneData ? (
-          zoneData.map((ctg) => {
+        {userData !== undefined ? (
+          userData.map((user) => {
             return (
-              <ZoneTableLine
-                key={ctg.id}
-                zone={ctg}
+              <UserTableLine
+                key={user.id}
+                user={user}
                 checkBoxValues={checkBoxValues}
                 setCheckBoxValues={setCheckBoxValues}
-                SetZone={SetZone}
+                setUser={setUser}
               />
             );
           })
         ) : (
-          <ZoneTableLine
-            zone={undefined}
+          <UserTableLine
+            key="0"
+            user={undefined}
             checkBoxValues={checkBoxValues}
             setCheckBoxValues={setCheckBoxValues}
-            SetZone={SetZone}
+            setUser={setUser}
           />
         )}
       </tbody>
