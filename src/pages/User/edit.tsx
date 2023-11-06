@@ -50,6 +50,7 @@ export default function UserEditComponent({
 
   const handleEditUser: SubmitHandler<User> = async (values: User) => {
     values.celular = Number(values.celular.toString().replace(/[^0-9]/g, ""));
+    values.telegram = values.telegram.toString().replace(/[^0-9]/g, "");
    
     const response = await editUser.mutateAsync(values);
 

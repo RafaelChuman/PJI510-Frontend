@@ -237,11 +237,11 @@ export default function GroupComponent() {
         ) : (
           groupsWithoutPagination.data && (
             <form
-              title={"Form Excluir Zona"}
-              placeholder={"Form Excluir Zona"}
+              title={"Form Excluir Group"}
+              placeholder={"Form Excluir Group"}
               onSubmit={formDeletion.handleSubmit(handleDelete)}
             >
-              <div className="ZoneTableContent">
+              <div className="GroupTableContent">
                 <GroupTable
                   groupData={groups}
                   checkBoxValues={checkBoxValues}

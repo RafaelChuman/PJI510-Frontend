@@ -7,8 +7,6 @@ import { Profile } from "./Profile";
 export function Header() {
   return (
     <Container>
-
-
       <Logo />
 
       <AuthContext.Consumer>

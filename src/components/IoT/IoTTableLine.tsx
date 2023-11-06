@@ -3,24 +3,24 @@ import { RiPencilLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../CheckBox";
 import { convertToDateBR } from "@/services/utils";
-import { ERs } from "@/services/entities";
+import { IoT } from "@/services/entities";
 
 interface TableLineProps {
-  er: ERs | undefined;
+  ioT: IoT | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
-  SetERValues: (value: SetStateAction<ERs | undefined>) => void;
+  SetIoTValues: (value: SetStateAction<IoT | undefined>) => void;
 }
 
-export function ERTableLine({
-  er,
+export function IoTTableLine({
+  ioT,
   checkBoxValues,
   setCheckBoxValues,
-  SetERValues,
+  SetIoTValues,
 }: TableLineProps) {
   const navigate = useNavigate();
 
-  if (!er) {
+  if (!ioT) {
     return <></>;
   }
 
@@ -28,23 +28,22 @@ export function ERTableLine({
     <tr>
       <td>
         <Checkbox
-          dataOfCheckbox={er}
+          dataOfCheckbox={ioT}
           checkBoxValues={checkBoxValues}
           setCheckBoxValues={setCheckBoxValues}
           title="Deletar"
           placeholder={"Deletar"}
-          name="ERTable"
+          name="IoTTable"
         ></Checkbox>
       </td>
-      <td>{er.number.toString()}</td>
-      <td>{er.zone.name}</td>
-      <td>{convertToDateBR(er.createdAt)}</td>
+      <td>{ioT.name.toString()}</td>
+      <td>{ioT.Group.name}</td>
+      <td>{convertToDateBR(ioT.createdAt)}</td>
       <td>
-        
-          <button type="button" onClick={()=>SetERValues(er)}>
-            <RiPencilLine />
-            &nbsp; Editar
-          </button>
+        <button type="button" onClick={() => SetIoTValues(ioT)}>
+          <RiPencilLine />
+          &nbsp; Editar
+        </button>
       </td>
     </tr>
   );

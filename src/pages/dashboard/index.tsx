@@ -6,57 +6,57 @@ import useModal from "@/services/hooks/useModal";
 import Modal from "@/components/Modal";
 import { RiFilter2Fill } from "react-icons/ri";
 import {
-  FormatLubrificationSystemsToChartLine,
-  FormatLubrificationSystemsToChartPie,
-  useLubrificationSystems,
-} from "@/services/hooks/useLubrificationSystems";
-import { ChartLineFilterModal, GraphiclOilUsed } from "./chartLineFilterModal";
-import {
-  FormatDataToCharts as FormatDataToChartsOilmonitor,
-  useOilMonitor,
-} from "@/services/hooks/useOilMonitor";
+  ChartLineFilterModal,
+  GraphicTemperature,
+} from "./chartLineFilterModal";
 import ChartBar, { dataOfChartBar } from "@/components/ChartBar";
 import ChartLined, { dataOfChartLined } from "@/components/ChartLined";
 import ChartPie from "@/components/ChartPie";
+import {
+  FormatDataToCharts,
+  useIoTMonitor,
+} from "@/services/hooks/useIoTMonitor";
+import { IoT } from "@/services/entities";
+import { useIoT } from "@/services/hooks/useIoT";
 
 let gofInitialValue = {
   dateBegin: new Date(),
   dateEnd: new Date(),
-  zones: [] as Zones[],
+  ioT: [] as IoT[],
 };
 
-let gofInitialValuePie= {
-  dateBegin: new Date(),
-  dateEnd: new Date(),
-  zones: [] as Zones[],
-};
+// let gofInitialValuePie = {
+//   dateBegin: new Date(),
+//   dateEnd: new Date(),
+//   zones: [] as Zones[],
+// };
 
 let chartLineData: dataOfChartLined = {
   categories: [[]],
   series: [],
 };
 
-let chartBarData: dataOfChartBar = {
-  categories: [[]],
-  series: [],
-};
+// let chartBarData: dataOfChartBar = {
+//   categories: [[]],
+//   series: [],
+// };
 
-let chartPieData: dataOfChartBar = {
-  categories: [[]],
-  series: [],
-};
+// let chartPieData: dataOfChartBar = {
+//   categories: [[]],
+//   series: [],
+// };
 
 export default function Dashboard() {
   const [color, useColor] = useState(theme.colors.purple);
-  const zones = useZones();
+  const ioT = useIoT();
 
   gofInitialValue.dateBegin.setDate(1);
-  gofInitialValuePie.dateBegin.setDate(1);
+  // gofInitialValuePie.dateBegin.setDate(1);
 
-  if (zones.data) {
-    if (zones.data.length > 1) {
-      gofInitialValue.zones = [zones.data[0], zones.data[1]];
-      gofInitialValuePie.zones = zones.data;
+  if (ioT.data) {
+    if (ioT.data.length > 1) {
+      gofInitialValue.ioT = ioT.data;
+      //gofInitialValuePie.zones = zones.data;
     }
   }
 
@@ -65,50 +65,39 @@ export default function Dashboard() {
   const chartPieFilterModal = useModal();
 
   const [chartLineFilter, setChartLineFilter] =
-    useState<GraphiclOilUsed>(gofInitialValue);
-  const [chartBarFilter, setChartBarFilter] =
-    useState<GraphiclOilUsed>(gofInitialValue);
-  const [chartPieFilter, setChartPieFilter] =
-    useState<GraphiclOilUsed>(gofInitialValuePie);
+    useState<GraphicTemperature>(gofInitialValue);
+  // const [chartBarFilter, setChartBarFilter] =
+  //   useState<GraphiclOilUsed>(gofInitialValue);
+  // const [chartPieFilter, setChartPieFilter] =
+  //   useState<GraphiclOilUsed>(gofInitialValuePie);
 
-  const chartLineDataNotFormated = useLubrificationSystems(
+  const ioTMonitor = useIoTMonitor(
     chartLineFilter.dateBegin,
-    chartLineFilter.dateEnd,
-    "chartLineDataNotFormated"
+    chartLineFilter.dateEnd
   );
 
-  const chartBarDataNotFormated = useOilMonitor(
-    chartBarFilter.dateBegin,
-    chartBarFilter.dateEnd
-  );
+  //const chartBarDataNotFormated = chartLineDataNotFormated
 
-  const chartPieDataNotFormated = useLubrificationSystems(
-    chartBarFilter.dateBegin,
-    chartBarFilter.dateEnd,
-    "chartPieDataNotFormated"
-  );
+  // const chartPieDataNotFormated = chartLineDataNotFormated
 
-  if (chartLineDataNotFormated.data) {
-    chartLineData = FormatLubrificationSystemsToChartLine(
-      chartLineDataNotFormated.data,
-      chartLineFilter.zones
-    );
+  if (ioTMonitor.data) {
+    chartLineData = FormatDataToCharts(ioTMonitor.data, gofInitialValue.ioT);
   }
 
-  if (chartBarDataNotFormated.data) {
-    chartBarData = FormatDataToChartsOilmonitor(
-      chartBarDataNotFormated.data,
-      chartBarFilter.zones,
-      32
-    );
-  }
+  // if (chartBarDataNotFormated.data) {
+  //   chartBarData = FormatDataToChartsOilmonitor(
+  //     chartBarDataNotFormated.data,
+  //     chartBarFilter.zones,
+  //     32
+  //   );
+  // }
 
-  if (chartPieDataNotFormated.data) {
-    chartPieData = FormatLubrificationSystemsToChartPie(
-      chartPieDataNotFormated.data,
-      chartPieFilter.zones
-    );
-  }
+  // if (chartPieDataNotFormated.data) {
+  //   chartPieData = FormatLubrificationSystemsToChartPie(
+  //     chartPieDataNotFormated.data,
+  //     chartPieFilter.zones
+  //   );
+  // }
 
   return (
     <>
@@ -117,13 +106,13 @@ export default function Dashboard() {
         toggle={chartLineFilterModal.toggle}
       >
         <ChartLineFilterModal
-          graphiclOilUsed={chartLineFilter}
-          setGraphicOilUsed={setChartLineFilter}
+          graphicTemperature={chartLineFilter}
+          setGraphicTemperature={setChartLineFilter}
           toggle={chartLineFilterModal.toggle}
         ></ChartLineFilterModal>
       </Modal>
 
-      <Modal
+      {/* <Modal
         isOpen={chartBarFilterModal.isOpen}
         toggle={chartBarFilterModal.toggle}
       >
@@ -143,7 +132,7 @@ export default function Dashboard() {
           setGraphicOilUsed={setChartPieFilter}
           toggle={chartPieFilterModal.toggle}
         ></ChartLineFilterModal>
-      </Modal>
+      </Modal> */}
 
       <ContainerStyled colorStyled={color}>
         <div className="ChartDataContainer">
@@ -156,15 +145,15 @@ export default function Dashboard() {
             {chartLineData && (
               <ChartLined
                 dataOfChart={chartLineData}
-                labelOfChart="Litros Adicionados na Manutenção"
+                labelOfChart="Temperatura em ºC"
                 dataType="datetime"
                 color={color}
               ></ChartLined>
             )}
           </div>
         </div>
-
-        <div className="ChartDataContainer">
+      </ContainerStyled>
+      {/* <div className="ChartDataContainer">
           <div className="filterButton">
             <button onClick={chartBarFilterModal.toggle}>
               {React.createElement(RiFilter2Fill)}{" "}
@@ -200,7 +189,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
-      </ContainerStyled>
+      </ContainerStyled> */}
     </>
   );
 }

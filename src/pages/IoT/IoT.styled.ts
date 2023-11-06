@@ -5,17 +5,15 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction:column;
+  flex-direction: column;
   width: 100%;
   margin-top: 6px;
   margin-left: auto;
 
-
-
-  .ERTableContent{
-    padding-top:20px;
+  .IoTTableContent {
+    padding-top: 20px;
   }
-  .ERContent{
+  .IoTContent {
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -23,15 +21,15 @@ export const Container = styled.div`
     margin-left: auto;
   }
 
-  .EREditLabelContent{
-    display:flex;
-    text-align:center;
-    justify-content:center;
+  .IoTEditLabelContent {
+    display: flex;
+    text-align: center;
+    justify-content: center;
     align-items: center;
     border-radius: 0.25rem;
     border: 2px solid ${theme.colors.cyan[700]};
     font-size: ${theme.fontSizes["1.125rem"]};
     height: ${theme.fontSizes["2.25rem"]};
-    width:100%;
+    width: 100%;
   }
 `;

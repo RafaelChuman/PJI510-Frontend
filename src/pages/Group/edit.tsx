@@ -8,6 +8,7 @@ import { useMutation } from "react-query";
 import { Container } from "./group.styled";
 import { convertToDateBR } from "@/services/utils";
 import { Group } from "@/services/entities";
+import RescueGroupComponent from "../RescueGroup";
 
 interface GroupEditProps {
   group: Group;
@@ -195,6 +196,8 @@ export default function EditZoneComponent({
           </div>
         </form>
       </div>
+
+      <RescueGroupComponent {...group} />
     </Container>
   );
 }

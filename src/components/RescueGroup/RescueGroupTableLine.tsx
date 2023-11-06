@@ -1,20 +1,20 @@
-import {  SetStateAction } from "react";
+import { SetStateAction } from "react";
 import { Checkbox } from "../CheckBox";
-import { LubrificationSystems } from "@/services/entities";
 import { convertToDateBR } from "@/services/utils";
+import { RescueGroup } from "@/services/entities";
 
 interface TableLineProps {
-  lubrificationSystem: LubrificationSystems | undefined;
+  rescueGroup: RescueGroup | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function LubrificationSystemTableLine({
-  lubrificationSystem,
+export function RescueGroupTableLine({
+  rescueGroup,
   checkBoxValues,
   setCheckBoxValues,
 }: TableLineProps) {
-  if (!lubrificationSystem) {
+  if (!rescueGroup) {
     return <></>;
   }
 
@@ -24,16 +24,21 @@ export function LubrificationSystemTableLine({
         <Checkbox
           checkBoxValues={checkBoxValues}
           setCheckBoxValues={setCheckBoxValues}
-          dataOfCheckbox={lubrificationSystem}
+          dataOfCheckbox={rescueGroup}
           title={"Deletar"}
           placeholder={"Deletar"}
         ></Checkbox>
       </td>
-      <td>{lubrificationSystem.activity?.name}</td>
-      <td>{lubrificationSystem.add}</td>
-      <td>{lubrificationSystem.obs}</td>
-      <td>{lubrificationSystem.collaborator?.name}</td>
-      <td>{convertToDateBR(lubrificationSystem.createdAt)}</td>
+      <td>
+        {" "}
+        <img
+          alt={rescueGroup.User.userName}
+          title="Logout"
+          src={rescueGroup.User.imgPath}
+        ></img>
+      </td>
+      <td>{rescueGroup.User.name}</td>
+      <td>{rescueGroup.User.telegram}</td>
     </tr>
   );
 }

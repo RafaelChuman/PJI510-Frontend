@@ -14,7 +14,7 @@ export function SideBar() {
     <Container>
       <NavSection title="IoT">
         <NavLinkComponent
-          href="/user"
+          href="/User"
           icon={RiHealthBookLine}
           navComponent="Usuários"
         />
@@ -23,18 +23,18 @@ export function SideBar() {
           icon={RiDashboardLine}
           navComponent="Grupos"
         />
-        <NavLinkComponent href="/ers" icon={RiHome2Line} navComponent="ER's" />
-
+        <NavLinkComponent href="/IoT" icon={RiHome2Line} navComponent="IoT's" />
+{/* 
         <NavLinkComponent
-          href="/zones"
+          href="/"
           icon={RiInputMethodLine}
-          navComponent="Zonas"
+          navComponent=""
         />
         <NavLinkComponent
-          href="/activities"
+          href="/"
           icon={RiGitMergeLine}
-          navComponent="Atividades"
-        />
+          navComponent=""
+        /> */}
       </NavSection>
     </Container>
   );

@@ -2,63 +2,66 @@ import { ComboBoxMultiple } from "@/components/ComboBoxMultiple";
 import { DateInput } from "@/components/DateInput";
 import { ModalContainer } from "./dashboard.styled";
 import React from "react";
+import { IoT } from "@/services/entities";
+import { useIoT } from "@/services/hooks/useIoT";
 
-export interface GraphiclOilUsed {
+export interface GraphicTemperature {
   dateBegin: Date;
   dateEnd: Date;
-  zones: Zones[];
+  ioT: IoT[];
 }
 
 export interface DashboardModalProps {
-  graphiclOilUsed: GraphiclOilUsed;
+  graphicTemperature: GraphicTemperature;
   toggle: () => void;
-  setGraphicOilUsed: React.Dispatch<React.SetStateAction<GraphiclOilUsed>>;
+  setGraphicTemperature: React.Dispatch<
+    React.SetStateAction<GraphicTemperature>
+  >;
 }
 
 export function ChartLineFilterModal({
-  graphiclOilUsed,
+  graphicTemperature,
   toggle,
-  setGraphicOilUsed,
+  setGraphicTemperature,
 }: DashboardModalProps) {
   // Function to update only the dateBegin property
   const updateDateBegin = (newDateBegin: Date) => {
-    setGraphicOilUsed((prevGraphiclOilUsed) => ({
-      ...prevGraphiclOilUsed,
+    setGraphicTemperature((prevGraphiclTemperature) => ({
+      ...prevGraphiclTemperature,
       dateBegin: newDateBegin,
     }));
   };
 
   // Function to update only the dateEnd property
   const updateDateEnd = (newDateEnd: Date) => {
-    setGraphicOilUsed((prevGraphiclOilUsed) => ({
-      ...prevGraphiclOilUsed,
+    setGraphicTemperature((prevGraphiclTemperature) => ({
+      ...prevGraphiclTemperature,
       dateEnd: newDateEnd,
     }));
   };
 
-  // Function to update only the zones property
-  const updateZones = (newZones: Zones[]) => {
-    setGraphicOilUsed((prevZones) => ({
-      ...prevZones,
-      zones: newZones,
+  // Function to update only the ioT property
+  const updateIoT = (newIoT: IoT[]) => {
+    setGraphicTemperature((prevIoT) => ({
+      ...prevIoT,
+      ioT: newIoT,
     }));
   };
 
-  const zonesWithoutFormat = useZones();
+  const ioTWithoutFormat = useIoT();
 
   async function handleApplyFilter(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     toggle();
   }
 
-
-  if(!graphiclOilUsed.zones.length)
-    if(zonesWithoutFormat.data && zonesWithoutFormat.data.length > 0)
-      graphiclOilUsed.zones.push(zonesWithoutFormat.data[0])
+  if (!graphicTemperature.ioT.length)
+    if (ioTWithoutFormat.data && ioTWithoutFormat.data.length > 0)
+      graphicTemperature.ioT.push(ioTWithoutFormat.data[0]);
 
   return (
     <>
-      {zonesWithoutFormat.data ? (
+      {ioTWithoutFormat.data ? (
         <ModalContainer>
           <form
             onSubmit={(e) => handleApplyFilter(e)}
@@ -69,26 +72,25 @@ export function ChartLineFilterModal({
               <label>Data Início</label>
 
               <DateInput
-                date={graphiclOilUsed.dateBegin}
+                date={graphicTemperature.dateBegin}
                 setDate={updateDateBegin}
               ></DateInput>
             </div>
             <div className="divFields">
               <label>Data Término</label>
               <DateInput
-                date={graphiclOilUsed.dateEnd}
+                date={graphicTemperature.dateEnd}
                 setDate={updateDateEnd}
               ></DateInput>
             </div>
 
             <div className="divFields">
-              <label>Selecione a Zona: </label>
+              <label>Selecione o IoT: </label>
 
               <ComboBoxMultiple
-                
-                comboBoxData={zonesWithoutFormat.data}
-                comboBoxDefaultValues={graphiclOilUsed.zones}
-                comboBoxSetValues={updateZones}
+                comboBoxData={ioTWithoutFormat.data}
+                comboBoxDefaultValues={graphicTemperature.ioT}
+                comboBoxSetValues={updateIoT}
               ></ComboBoxMultiple>
             </div>
             <div className="divFields">
