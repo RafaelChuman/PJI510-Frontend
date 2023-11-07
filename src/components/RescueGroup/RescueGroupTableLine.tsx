@@ -32,6 +32,7 @@ export function RescueGroupTableLine({
       <td>
         {" "}
         <img
+          className="imagePreview"
           alt={rescueGroup.User.userName}
           title="Logout"
           src={rescueGroup.User.imgPath}

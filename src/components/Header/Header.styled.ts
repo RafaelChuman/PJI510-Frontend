@@ -61,8 +61,8 @@ export const Container = styled.div`
       }
 
       img {
-        width: 32;
-        height: 32px;
+        width: 64;
+        height: 64px;
         
 
         :hover {

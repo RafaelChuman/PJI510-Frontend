@@ -8,17 +8,19 @@ import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
 import { Container } from "./group.styled";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
-import EditZoneComponent from "./edit";
 import { Group } from "@/services/entities";
 import { useGroup } from "@/services/hooks/useGroup";
 import { GroupTable } from "@/components/Group/GroupTable";
+import RescueGroupComponent from "../RescueGroup";
+import EditGroupComponent from "./edit";
 
 export default function GroupComponent() {
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<Group>();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
-  const [GroupToEdit, setGroupToEdit] = useState<Group>();
+  const [groupToEdit, setGroupToEdit] = useState<Group>();
+  const [rescueGroup, setRescueGroup] = useState<Group>();
 
   const formDeletion = useForm();
 
@@ -78,7 +80,7 @@ export default function GroupComponent() {
       value: 100,
       message: "A Umidade deve ser menor do que 100%",
     },
-    valueAsNumber: true
+    valueAsNumber: true,
   });
 
   const temperature = register("temperature", {
@@ -91,7 +93,7 @@ export default function GroupComponent() {
       value: 50,
       message: "A Temperatura deve ser menor do que 50ºC",
     },
-    valueAsNumber: true
+    valueAsNumber: true,
   });
 
   const noBreak = register("noBreak", {
@@ -104,9 +106,8 @@ export default function GroupComponent() {
       value: 120,
       message: "O deve ser maior do que 2 horas (120 min)",
     },
-    valueAsNumber: true
+    valueAsNumber: true,
   });
-
 
   const handleCreate: SubmitHandler<Group> = async (values: Group) => {
     const response = await createGroup.mutateAsync(values);
@@ -135,135 +136,142 @@ export default function GroupComponent() {
     setCheckBoxValues([]);
   }
 
-  if (GroupToEdit) {
+  if (groupToEdit) {
     return (
-      <EditZoneComponent
+      <EditGroupComponent
         setGroup={setGroupToEdit}
         setCheckBoxValues={setCheckBoxValues}
-        group={GroupToEdit}
+        group={groupToEdit}
       />
     );
-  } else {
+  }
+
+  if (rescueGroup) {
     return (
-      <Container>
-        <h1>Grupos</h1>
-        <div>
-          <form
-            onSubmit={handleSubmit(handleCreate)}
-            className="GroupContent"
-            title={"Form Criar Grupo"}
-            placeholder={"Form Criar Grupo"}
-          >
-            <p>{error}</p>
-
-            <div className="Fields">
-              <label>Nome:</label>
-              <input
-                width="100%"
-                alt="Name"
-                type="text"
-                title="Name"
-                placeholder="Name"
-                {...name}
-              />
-            </div>
-            <div className="Fields">
-              <ErrorMessage errors={formState.errors} name="name" />
-            </div>
-
-            <div className="Fields">
-              <label>Umidade (%):</label>
-              <input
-                width="100%"
-                alt="Humidity"
-                type="number"
-                title="Humidity"
-                placeholder="Humidity"
-                {...humidity}
-              />
-            </div>
-            <div className="Fields">
-              <ErrorMessage errors={formState.errors} name="humidity" />
-            </div>
-
-            <div className="Fields">
-              <label>Temperatura (ºC):</label>
-              <input
-                width="100%"
-                alt="Temperature"
-                type="number"
-                title="Temperature"
-                placeholder="Temperature"
-                {...temperature}
-              />
-            </div>
-            <div className="Fields">
-              <ErrorMessage errors={formState.errors} name="temperature" />
-            </div>
-
-            <div className="Fields">
-              <label>NoBreak (min):</label>
-              <input
-                width="100%"
-                alt="NoBreak"
-                type="number"
-                title="NoBreak"
-                placeholder="NoBreak"
-                {...noBreak}
-              />
-            </div>
-            <div className="Fields">
-              <ErrorMessage errors={formState.errors} name="noBreak" />
-            </div>
-
-            <div className="Fields">
-              <button type={"submit"} disabled={formState.isSubmitting}>
-                {formState.isSubmitting ? (
-                  "..."
-                ) : (
-                  <>
-                    <RiAddFill /> Salvar
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
-
-        {groupsWithoutPagination.isLoading ? (
-          "..."
-        ) : groupsWithoutPagination.error ? (
-          <p>Falha ao Obter Dados</p>
-        ) : (
-          groupsWithoutPagination.data && (
-            <form
-              title={"Form Excluir Group"}
-              placeholder={"Form Excluir Group"}
-              onSubmit={formDeletion.handleSubmit(handleDelete)}
-            >
-              <div className="GroupTableContent">
-                <GroupTable
-                  groupData={groups}
-                  checkBoxValues={checkBoxValues}
-                  setCheckBoxValues={setCheckBoxValues}
-                  setGroup={setGroupToEdit}
-                />
-              </div>
-              <div>
-                <Pagination
-                  totalCountOfRegisters={groupsWithoutPagination.data.length}
-                  currentPage={currentPage}
-                  registersPerPage={numberOfItensPerPage}
-                  onPageClick={setCurrentPage}
-                ></Pagination>
-              </div>
-              <button type="submit" className="DeleteButton">
-                <RiCloseFill /> Excluir
-              </button>
-            </form>
-          )
-        )}
-      </Container>
+      <RescueGroupComponent group={rescueGroup} setGroup={setRescueGroup} />
     );
   }
+
+  return (
+    <Container>
+      <h1>Grupos</h1>
+      <div>
+        <form
+          onSubmit={handleSubmit(handleCreate)}
+          className="GroupContent"
+          title={"Form Criar Grupo"}
+          placeholder={"Form Criar Grupo"}
+        >
+          <p>{error}</p>
+
+          <div className="Fields">
+            <label>Nome:</label>
+            <input
+              width="100%"
+              alt="Name"
+              type="text"
+              title="Name"
+              placeholder="Name"
+              {...name}
+            />
+          </div>
+          <div className="Fields">
+            <ErrorMessage errors={formState.errors} name="name" />
+          </div>
+
+          <div className="Fields">
+            <label>Umidade (%):</label>
+            <input
+              width="100%"
+              alt="Humidity"
+              type="number"
+              title="Humidity"
+              placeholder="Humidity"
+              {...humidity}
+            />
+          </div>
+          <div className="Fields">
+            <ErrorMessage errors={formState.errors} name="humidity" />
+          </div>
+
+          <div className="Fields">
+            <label>Temperatura (ºC):</label>
+            <input
+              width="100%"
+              alt="Temperature"
+              type="number"
+              title="Temperature"
+              placeholder="Temperature"
+              {...temperature}
+            />
+          </div>
+          <div className="Fields">
+            <ErrorMessage errors={formState.errors} name="temperature" />
+          </div>
+
+          <div className="Fields">
+            <label>NoBreak (min):</label>
+            <input
+              width="100%"
+              alt="NoBreak"
+              type="number"
+              title="NoBreak"
+              placeholder="NoBreak"
+              {...noBreak}
+            />
+          </div>
+          <div className="Fields">
+            <ErrorMessage errors={formState.errors} name="noBreak" />
+          </div>
+
+          <div className="Fields">
+            <button type={"submit"} disabled={formState.isSubmitting}>
+              {formState.isSubmitting ? (
+                "..."
+              ) : (
+                <>
+                  <RiAddFill /> Salvar
+                </>
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {groupsWithoutPagination.isLoading ? (
+        "..."
+      ) : groupsWithoutPagination.error ? (
+        <p>Falha ao Obter Dados</p>
+      ) : (
+        groupsWithoutPagination.data && (
+          <form
+            title={"Form Excluir Group"}
+            placeholder={"Form Excluir Group"}
+            onSubmit={formDeletion.handleSubmit(handleDelete)}
+          >
+            <div className="GroupTableContent">
+              <GroupTable
+                groupData={groups}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
+                setGroup={setGroupToEdit}
+                setRescueGroup={setRescueGroup}
+              />
+            </div>
+            <div>
+              <Pagination
+                totalCountOfRegisters={groupsWithoutPagination.data.length}
+                currentPage={currentPage}
+                registersPerPage={numberOfItensPerPage}
+                onPageClick={setCurrentPage}
+              ></Pagination>
+            </div>
+            <button type="submit" className="DeleteButton">
+              <RiCloseFill /> Excluir
+            </button>
+          </form>
+        )
+      )}
+    </Container>
+  );
 }

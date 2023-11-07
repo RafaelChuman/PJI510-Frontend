@@ -7,6 +7,7 @@ interface GroupTableProps {
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
   setGroup: (value: SetStateAction<Group | undefined>) => void;
+  setRescueGroup: (value: SetStateAction<Group | undefined>) => void;
 }
 
 export function GroupTable({
@@ -14,6 +15,7 @@ export function GroupTable({
   checkBoxValues,
   setCheckBoxValues,
   setGroup,
+  setRescueGroup,
 }: GroupTableProps) {
   return (
     <table>
@@ -24,6 +26,7 @@ export function GroupTable({
           <th>Temperatura</th>
           <th>Humidade</th>
           <th>Nobreak</th>
+          <th> </th>
           <th> </th>
         </tr>
       </thead>
@@ -37,6 +40,7 @@ export function GroupTable({
                 checkBoxValues={checkBoxValues}
                 setCheckBoxValues={setCheckBoxValues}
                 setGroup={setGroup}
+                setRescueGroup={setRescueGroup}
               />
             );
           })
@@ -46,6 +50,7 @@ export function GroupTable({
             checkBoxValues={checkBoxValues}
             setCheckBoxValues={setCheckBoxValues}
             setGroup={setGroup}
+            setRescueGroup={setRescueGroup}
           />
         )}
       </tbody>

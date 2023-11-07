@@ -220,6 +220,12 @@ export default createGlobalStyle`
     border: 2px solid ${theme.colors.pink[800]};
   }
 
+  .ReturnButton{
+    color: ${theme.colors.gray[800]};
+    border: 2px solid ${theme.colors.gray[800]};
+  }
+
+
   p{
     color:${theme.colors.gray[800]};
     font-weight: ${theme.fontWeights.normal};
@@ -298,11 +304,12 @@ export default createGlobalStyle`
       height: ${theme.lineHeights["2.25rem"]} ;
 
       color: ${theme.colors.cyan[900]};
+      vertical-align: center;
 
       td {
         text-align: center;
         justify-content:center;
-        vertical-align: middle;
+        vertical-align: center;
       }
 
       input[type='button'] {

@@ -14,7 +14,7 @@ export function RescueGroupTable({
   setCheckBoxValues,
 }: RescueGroupTableProps) {
   return (
-    <table>
+    <table className="RescueGroupTableContent">
       <thead>
         <tr>
           <th></th>

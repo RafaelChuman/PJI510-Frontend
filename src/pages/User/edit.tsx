@@ -3,7 +3,7 @@ import { queryClient } from "@/services/queryClient";
 import { ErrorMessage } from "@hookform/error-message";
 import { SetStateAction, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { RiRefreshLine } from "react-icons/ri";
+import { RiArrowGoBackFill, RiRefreshLine } from "react-icons/ri";
 import { useMutation } from "react-query";
 import { Container } from "./user.styled";
 import InputMask from "react-input-mask";
@@ -20,8 +20,6 @@ export default function UserEditComponent({
   setUser,
   setCheckBoxValues,
 }: UserEditProps) {
-  
-  
   const { register, handleSubmit, formState } = useForm<User>();
   const [Error, setError] = useState("");
 
@@ -51,7 +49,7 @@ export default function UserEditComponent({
   const handleEditUser: SubmitHandler<User> = async (values: User) => {
     values.celular = Number(values.celular.toString().replace(/[^0-9]/g, ""));
     values.telegram = values.telegram.toString().replace(/[^0-9]/g, "");
-   
+
     const response = await editUser.mutateAsync(values);
 
     if (response.status != 200) {
@@ -159,7 +157,7 @@ export default function UserEditComponent({
           placeholder={"Form Editar Usuário"}
         >
           <p>{Error}</p>
-          
+
           <div className="DivFormFields">
             {" "}
             <label>Nome:</label>
@@ -253,7 +251,7 @@ export default function UserEditComponent({
             <ErrorMessage errors={formState.errors} name="imgPath" />
           </div>
 
-          <div>
+          <div className="DivFormFields">
             <button type={"submit"} disabled={formState.isSubmitting}>
               {formState.isSubmitting ? (
                 "..."
@@ -262,6 +260,15 @@ export default function UserEditComponent({
                   <RiRefreshLine /> Editar
                 </>
               )}
+            </button>
+
+            <button
+              className="ReturnButton"
+              onClick={() => {
+                setUser(undefined);
+              }}
+            >
+              <RiArrowGoBackFill /> Retornar
             </button>
           </div>
         </form>

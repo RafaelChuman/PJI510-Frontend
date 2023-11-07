@@ -60,10 +60,10 @@ export async function getToken({
     })
     .catch((error) => {
       responseToken.tokenError = error;
-      console.log(error)
+      console.log(error);
     });
 
-    console.log(resp)
+  console.log(resp);
 
   responseToken.token = resp;
 
@@ -90,7 +90,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (userName) {
       let searchParam = userName;
       api
-        .get<User>(`users/?userName=${searchParam}`)
+        .get<User>(`user/?userName=${searchParam}`)
         .then((resp) => {
           setUserNameProvider(resp.data.userName);
           setNameProvider(resp.data.name);

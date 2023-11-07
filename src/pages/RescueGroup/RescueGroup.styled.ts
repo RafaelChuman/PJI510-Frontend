@@ -12,4 +12,26 @@ export const Container = styled.div`
   .RescueGroupTableContent {
     padding-top: 48px;
   }
+
+  .Fields {
+    max-width: 450px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 6px;
+    padding: 5px;
+  }
+
+  .imagePreview {
+    width: 32;
+    height: 32px;
+
+    filter: grayscale(100%);
+
+    vertical-align: middle;
+
+    border-radius: 4px;
+  }
 `;

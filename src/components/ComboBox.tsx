@@ -33,11 +33,9 @@ function FormatDataToCombobox<T extends Options>(allData: T[]): Options[] {
 //   event: ChangeEvent<HTMLSelectElement>,
 //   { handleClick, comboboxData }: ComboBoxProps<T>
 // ) {
-//   console.log(event.target.value);
 
 //   const value = comboboxData?.find((data) => data.id === event.target.value);
 
-//   console.log(value);
 //   if(value)
 //     handleClick([value])
 // }
@@ -75,8 +73,6 @@ function comboBoxInner<T extends Options>(
 export const ComboBox = forwardRef(comboBoxInner);
 
 // () => {
-//   console.log("Click");
-//   console.log(combData);
 //   handleClick(combData);
 // }
 

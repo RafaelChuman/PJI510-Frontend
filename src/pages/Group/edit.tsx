@@ -3,12 +3,11 @@ import { queryClient } from "@/services/queryClient";
 import { ErrorMessage } from "@hookform/error-message";
 import { SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { RiRefreshLine } from "react-icons/ri";
+import { RiArrowGoBackFill, RiRefreshLine } from "react-icons/ri";
 import { useMutation } from "react-query";
 import { Container } from "./group.styled";
 import { convertToDateBR } from "@/services/utils";
 import { Group } from "@/services/entities";
-import RescueGroupComponent from "../RescueGroup";
 
 interface GroupEditProps {
   group: Group;
@@ -16,7 +15,7 @@ interface GroupEditProps {
   setGroup: (value: SetStateAction<Group | undefined>) => void;
 }
 
-export default function EditZoneComponent({
+export default function EditGroupComponent({
   group,
   setGroup,
   setCheckBoxValues,
@@ -112,7 +111,7 @@ export default function EditZoneComponent({
         <label>{group.id}</label>
       </div>
       <div className="Fields">
-        <label>Nome da Zona:</label>
+        <label>Nome do Grupo:</label>
         <label>{group.name}</label>
       </div>
 
@@ -183,7 +182,7 @@ export default function EditZoneComponent({
             <ErrorMessage errors={formState.errors} name="noBreak" />
           </div>
 
-          <div>
+          <div className="Fields">
             <button type={"submit"} disabled={formState.isSubmitting}>
               {formState.isSubmitting ? (
                 "..."
@@ -193,11 +192,18 @@ export default function EditZoneComponent({
                 </>
               )}
             </button>
+
+            <button
+              className="ReturnButton"
+              onClick={() => {
+                setGroup(undefined);
+              }}
+            >
+              <RiArrowGoBackFill /> Retornar
+            </button>
           </div>
         </form>
       </div>
-
-      <RescueGroupComponent {...group} />
     </Container>
   );
 }

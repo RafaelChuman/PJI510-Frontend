@@ -38,7 +38,7 @@ export async function getIoTMonitor(
     name: "ioTMonitor",
     whereData: {
       dateBegin: dateBegin.toString(),
-      dateEnd: dateBegin.toString(),
+      dateEnd: dateEnd.toString(),
     },
   });
 
@@ -57,7 +57,7 @@ export function FormatDataToCharts(
   critical?: number
 ) {
   let categories: [string[]] = [[]];
-  let series: { name: string; data: {x: number, y:number}[] } = {
+  let series: { name: string; data: { x: number; y: number }[] } = {
     name: "IoTMonitor",
     data: [],
   };
@@ -96,20 +96,22 @@ export function FormatDataToCharts(
   //Group the Categories By ID of IoT
   //Group the Series By IoT, and Define the IoT Information Group by Group
   categories.pop();
-  let cont =1;
+  let cont = 1;
 
-  ioTSorted.reduce((previous, current) => {
-    if (previous.IoT.id != current.IoT.id) {
-      categories.push([current.IoT.id.toString(), current.IoT.Group.name]);
+  if (ioTSorted.length >= 1) {
+    const initialValue = ioTSorted[0];
 
-      series.data.push({x: cont,y: current.temperature});
-      cont++;
-    }
+    ioTSorted.reduce((previous, current) => {
+      if (previous.IoT.id != current.IoT.id) {
+        categories.push([current.IoT.id.toString(), current.IoT.Group.name]);
 
-    return current;
-  }, initialValue);
+        series.data.push({ x: cont, y: current.temperature });
+        cont++;
+      }
+
+      return current;
+    }, initialValue);
+  }
 
   return { categories: categories, series: [series] };
 }
-
-let initialValue: IoTMonitor;

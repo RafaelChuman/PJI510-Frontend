@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { RiPencilLine } from "react-icons/ri";
+import { RiAddFill, RiPencilLine } from "react-icons/ri";
 import { Checkbox } from "../CheckBox";
 import { convertToDateBR } from "@/services/utils";
 import { Group } from "@/services/entities";
@@ -9,6 +9,7 @@ interface TableLineProps {
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
   setGroup: (value: SetStateAction<Group | undefined>) => void;
+  setRescueGroup: (value: SetStateAction<Group | undefined>) => void;
 }
 
 export function GroupTableLine({
@@ -16,6 +17,7 @@ export function GroupTableLine({
   checkBoxValues,
   setCheckBoxValues,
   setGroup,
+  setRescueGroup
 }: TableLineProps) {
   if (!group) {
     return <></>;
@@ -42,6 +44,12 @@ export function GroupTableLine({
         <button onClick={() => setGroup(group)}>
           <RiPencilLine></RiPencilLine>
           &nbsp; Editar
+        </button>
+      </td>
+      <td>
+        <button onClick={() => setRescueGroup(group)}>
+          <RiAddFill/>
+          &nbsp; Contato
         </button>
       </td>
     </tr>

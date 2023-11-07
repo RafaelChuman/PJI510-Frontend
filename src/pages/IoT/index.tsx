@@ -36,9 +36,6 @@ export default function IoTComponent() {
 
   const create = useMutation(
     async (iot: IoT) => {
-
-      console.log(iot)
-
       const response = await api.post("ioT", {
         name: iot?.name,
         group: iot?.Group,
@@ -105,7 +102,7 @@ export default function IoTComponent() {
   }
 
   if (ioTEdit) {
-    return <IoTEditComponent {...ioTEdit} />;
+    return <IoTEditComponent ioT={ioTEdit} setIoT={setIoTEdit} />;
   } else {
     return (
       <Container>
@@ -128,12 +125,14 @@ export default function IoTComponent() {
                 {...name}
               />
             </div>
-            <div><ErrorMessage errors={formState.errors} name="name" /></div>
+            <div>
+              <ErrorMessage errors={formState.errors} name="name" />
+            </div>
 
             <div className="DivFormFields">
               {groupWithoutFormat.data ? (
                 <>
-                  <label>Selecione a Zona: </label>
+                  <label>Selecione o Grupo: </label>
                   <ComboBox
                     comboboxData={groupWithoutFormat.data}
                     handleClick={() => console.log("Combobox Clicked")}
@@ -145,7 +144,9 @@ export default function IoTComponent() {
                 <></>
               )}
             </div>
-            <div><ErrorMessage errors={formState.errors} name="group" /></div>
+            <div>
+              <ErrorMessage errors={formState.errors} name="group" />
+            </div>
 
             <div className="DivFormFields">
               <button type={"submit"} disabled={formState.isSubmitting}>

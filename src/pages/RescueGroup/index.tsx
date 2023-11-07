@@ -1,20 +1,28 @@
 import { Pagination } from "@/components/Pagination";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { returnPaginatedData } from "@/services/utils";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
 import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
 import { Container } from "./RescueGroup.styled";
 import { ComboBox } from "@/components/ComboBox";
-import { RiAddFill, RiCloseFill } from "react-icons/ri";
+import { RiAddFill, RiArrowGoBackFill, RiCloseFill } from "react-icons/ri";
 import { Group, RescueGroup } from "@/services/entities";
 import { useRescueGroup } from "@/services/hooks/useRescueGroup";
 import { useUsers } from "@/services/hooks/useUser";
 import { RescueGroupTable } from "@/components/RescueGroup/RescueGroupTable";
 
-export default function RescueGroupComponent(group: Group) {
+export interface RescueGroupParams {
+  group: Group;
+  setGroup: (values: SetStateAction<Group | undefined>) => void;
+}
+
+export default function RescueGroupComponent({
+  group,
+  setGroup,
+}: RescueGroupParams) {
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<RescueGroup>();
@@ -33,10 +41,8 @@ export default function RescueGroupComponent(group: Group) {
   const create = useMutation(
     async (addItem: RescueGroup) => {
       const response = await api.post("rescueGroup", {
-        lubrificationSystems: {
-          Group: addItem.Group,
-          User: addItem.User,
-        },
+        group: group,
+        users: [addItem.User],
       });
 
       return response;
@@ -93,6 +99,8 @@ export default function RescueGroupComponent(group: Group) {
 
   return (
     <Container>
+      <h1>Grupo Manutenção</h1>
+
       <div>
         <form
           onSubmit={handleSubmit(handleCreate)}
@@ -100,6 +108,15 @@ export default function RescueGroupComponent(group: Group) {
           title={"Form Adicionar Usuários no Grupo de Notificação"}
           placeholder={"Form Adicionar Usuários no Grupo de Notificação"}
         >
+          <div className="DivFormFields">
+            <label>ID:</label>
+            <label>{group.id}</label>
+          </div>
+          <div className="DivFormFields">
+            <label>Nome do GRupo:</label>
+            <label>{group.name}</label>
+          </div>
+
           <div className="DivFormFields">
             <label>Usuário: </label>
             {users.data && (
@@ -121,7 +138,7 @@ export default function RescueGroupComponent(group: Group) {
                 "..."
               ) : (
                 <>
-                  <RiAddFill /> Salvar
+                  <RiAddFill /> Adicionar
                 </>
               )}
             </button>
@@ -141,7 +158,7 @@ export default function RescueGroupComponent(group: Group) {
             placeholder={"Form Excluir Lubrificarion System"}
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
-            <div className="LubrificationSystemTableContent">
+            <div className="RescueGroupTableContent">
               <RescueGroupTable
                 rescueGroupData={rescueGroup}
                 checkBoxValues={checkBoxValues}
@@ -156,9 +173,19 @@ export default function RescueGroupComponent(group: Group) {
                 onPageClick={setCurrentPage}
               ></Pagination>
             </div>
-            <button type="submit" className="DeleteButton">
-              <RiCloseFill /> Excluir
-            </button>
+            <div className="DivFormFields">
+              <button type="submit" className="DeleteButton">
+                <RiCloseFill /> Excluir
+              </button>
+              <button
+                className="ReturnButton"
+                onClick={() => {
+                  setGroup(undefined);
+                }}
+              >
+                <RiArrowGoBackFill /> Retornar
+              </button>
+            </div>
           </form>
         )
       )}

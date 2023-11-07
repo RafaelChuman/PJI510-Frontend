@@ -10,7 +10,7 @@ export interface LubrificationSystemsGroupedByData {
 export async function getRecueGroup(id: string): Promise<RescueGroup[]> {
   const data = await getEntitie<RescueGroup>({
     name: "rescueGroup",
-    whereData: { id: id },
+    whereData: { groupId: id },
   });
 
   return data;
