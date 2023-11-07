@@ -51,39 +51,24 @@ export function useIoTMonitor(dateBegin: Date, dateEnd: Date) {
   });
 }
 
-export function FormatDataToCharts(
+export function FilterDataToCharts(
   ioTMonitor: IoTMonitor[],
-  ioTFilter?: IoT[],
-  critical?: number
+  ioTFilter?: IoT[]
 ) {
-  let categories: [string[]] = [[]];
-  let series: { name: string; data: { x: number; y: number }[] } = {
-    name: "IoTMonitor",
-    data: [],
-  };
-
   let ioTFiltered: IoTMonitor[] = [];
 
   //Execute a  filter of IoT[] into a IoTMonitor[]
   if (ioTFilter?.length && ioTFilter?.length > 0)
-    ioTFilter.map((item) => {
-      const itemFounded = ioTMonitor.find((filterItem) => {
-        if (filterItem.IoT.id == item.id) {
-          return filterItem;
+    ioTMonitor.map((item) => {
+      ioTFilter.find((filterItem) => {
+        if (filterItem.id == item.IoT.id) {
+          ioTFiltered.push(item);
         }
       });
-
-      if (critical) {
-        if (itemFounded && critical > item.Group.temperature) {
-          ioTFiltered.push(itemFounded);
-        }
-      } else {
-        if (itemFounded) ioTFiltered.push(itemFounded);
-      }
     });
 
   //Order by Data
-  const ioTSorted = ioTFiltered.sort((a, b) => {
+  return ioTFiltered.sort((a, b) => {
     if (a.IoT.id < b.IoT.id) {
       return -1;
     }
@@ -92,26 +77,88 @@ export function FormatDataToCharts(
     }
     return 0;
   });
+}
 
+export function FormatDataToCharts(
+  ioTSorted: IoTMonitor[],
+  field: "temperature" | "noBreak" | "humidity"
+) {
   //Group the Categories By ID of IoT
   //Group the Series By IoT, and Define the IoT Information Group by Group
+
+  let categories: string[] = [];
+  let series: { name: string; data: { x: Date; y: number }[] }[] = [];
+
   categories.pop();
-  let cont = 1;
+  let count = 0;
+  let x = 0;
 
   if (ioTSorted.length >= 1) {
     const initialValue = ioTSorted[0];
+    categories.push(initialValue.IoT.name);
+    series.push({ name: initialValue.IoT.name, data: [] });
 
     ioTSorted.reduce((previous, current) => {
       if (previous.IoT.id != current.IoT.id) {
-        categories.push([current.IoT.id.toString(), current.IoT.Group.name]);
+        //categories.push([current.IoT.id.toString(), current.IoT.Group.name]);
+        categories.push(current.IoT.name);
+        series.push({ name: current.IoT.name, data: [] });
 
-        series.data.push({ x: cont, y: current.temperature });
-        cont++;
+        count++;
       }
 
+      if (field == "noBreak")
+        series[count].data.push({
+          x: current.createdAt,
+          y: Number(current.noBreak),
+        });
+
+      if (field == "humidity")
+        series[count].data.push({ x: current.createdAt, y: current.humidity });
+
+      if (field == "temperature")
+        series[count].data.push({
+          x: current.createdAt,
+          y: current.temperature,
+        });
+
+      x = x + 1;
       return current;
     }, initialValue);
   }
+  return { categories: categories, series: series };
+}
 
-  return { categories: categories, series: [series] };
+export function FormatDataToChartPie(
+  ioTSorted: IoTMonitor[],
+  field: "temperature" | "noBreak" | "humidity"
+) {
+
+  
+
+  let categories: string[] = [];
+  let series: number[] = [];
+
+  let previous = ioTSorted[0];
+  const last = ioTSorted.length - 1;
+
+  for (let index = 0; index < ioTSorted.length; index++) {
+    let current = ioTSorted[index];
+
+    if (previous.IoT.id != current.IoT.id) {
+      categories.push(previous.IoT.name);
+      if (field == "noBreak") series.push(Number(previous.noBreak));
+      if (field == "humidity") series.push(Number(previous.humidity));
+      if (field == "temperature") series.push(Number(previous.temperature));
+
+      previous = current;
+    }
+  }
+
+  categories.push(ioTSorted[last].IoT.name);
+  if (field == "noBreak") series.push(Number(ioTSorted[last].noBreak));
+  if (field == "humidity") series.push(Number(ioTSorted[last].humidity));
+  if (field == "temperature") series.push(Number(ioTSorted[last].temperature));
+
+  return { categories: categories, series: series };
 }

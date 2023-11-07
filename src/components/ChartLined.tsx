@@ -10,7 +10,7 @@ export interface ChartLinedProps {
 }
 
 export interface dataOfChartLined {
-  categories: [string[]];
+  categories: string[];
   series: {
     name: string;
     group?: string;
@@ -96,7 +96,7 @@ const ChartLined: React.FC<ChartLinedProps> = ({
 
   const series = dataOfChart.series;
 
-  if(dataOfChart.categories.length == 1 || dataOfChart.series.length == 0)
+  if( dataOfChart.series.length == 0)
     return <></>
 
   return (

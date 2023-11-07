@@ -5,17 +5,17 @@ import React from "react";
 import { IoT } from "@/services/entities";
 import { useIoT } from "@/services/hooks/useIoT";
 
-export interface GraphicTemperature {
+export interface GraphicIoT {
   dateBegin: Date;
   dateEnd: Date;
   ioT: IoT[];
 }
 
 export interface DashboardModalProps {
-  graphicTemperature: GraphicTemperature;
+  graphicTemperature: GraphicIoT;
   toggle: () => void;
   setGraphicTemperature: React.Dispatch<
-    React.SetStateAction<GraphicTemperature>
+    React.SetStateAction<GraphicIoT>
   >;
 }
 

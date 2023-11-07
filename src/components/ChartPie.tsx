@@ -3,58 +3,57 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import styled from "styled-components";
 
-export interface ChartBarProps {
+export interface ChartPieProps {
   labelOfChart: string;
-  dataOfChart: dataOfChartBar;
+  dataOfChart: dataOfChartPie;
   color: { [key: string]: string };
 }
 
-export interface dataOfChartBar {
-  categories: [string[]];
-  series: {
-    data: number[];
-  }[];
+export interface dataOfChartPie {
+  categories: string[];
+  series: number[];
 }
 
-const ChartPie: React.FC<ChartBarProps> = ({
+const ChartPie: React.FC<ChartPieProps> = ({
   labelOfChart,
   dataOfChart,
   color,
-}: ChartBarProps) => {
-
+}: ChartPieProps) => {
   const lengthOfCategories = dataOfChart.categories[0]?.length;
-  const lengthOfSeries = dataOfChart.series[0]?.data?.length;
+  const lengthOfSeries = dataOfChart.series.length;
 
   if (!lengthOfCategories || !lengthOfSeries) return <></>;
 
-  const series = dataOfChart.series[0].data;
-  const categories = dataOfChart.categories[0];
+  const series = dataOfChart.series;
+  const categories = dataOfChart.categories;
 
   const options: ApexOptions = {
     series: series,
     chart: {
-    width: 380,
-    type: 'pie',
-  },
-  labels: categories,
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 200
+      width: 380,
+      type: "radialBar",
+    },
+    labels: categories,
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: "bottom",
+          },
+        },
       },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }]
+    ],
   };
   return (
     <>
       <label color={color[600]}>{labelOfChart} </label>
 
       <ReactApexChart
-        type="pie"
+        type="radialBar"
         height={350}
         width={450}
         options={options}
@@ -65,5 +64,3 @@ const ChartPie: React.FC<ChartBarProps> = ({
 };
 
 export default ChartPie;
-
-

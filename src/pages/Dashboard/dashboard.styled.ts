@@ -35,6 +35,9 @@ export const ContainerStyled  = styled.div<ChartsProps>`
       display: inline-block;
     }
     .contentChart{
+      flex-direction: row;
+      aling-itens: center;
+      justify-content: center;
       margin-top: calc(15px + 27px)
     }
   }

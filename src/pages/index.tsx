@@ -43,7 +43,6 @@ const Home = () => {
   });
 
   const handleSignIn: SubmitHandler<UserSignInCredentials> = async (values) => {
-
     const response = await SignIn(values);
 
     if (response.tokenError != undefined) {
@@ -61,12 +60,7 @@ const Home = () => {
     <>
       <h1>Login</h1>
 
-
-
-
       <form onSubmit={handleSubmit(handleSignIn)}>
-
-
         <Container>
           <label>Insira seu Usuário: </label>
           <input

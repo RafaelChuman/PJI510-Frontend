@@ -10,15 +10,28 @@ export interface ChartBarProps {
 }
 
 export interface dataOfChartBar {
-  categories: [string[]];
+  categories: string[];
   series: {
-    data: number[];
+    name: string;
+    group?: string;
+    data: {
+      x: any;
+      y: any;
+      fill?: ApexFill;
+      fillColor?: string;
+      strokeColor?: string;
+      meta?: any;
+      goals?: any;
+      barHeightOffset?: number;
+      columnWidthOffset?: number;
+    }[];
   }[];
 }
 
 const ChartBar: React.FC<ChartBarProps> = ({
   labelOfChart,
   dataOfChart,
+  dataType,
   color,
 }: ChartBarProps) => {
   const series = dataOfChart.series;
@@ -40,20 +53,31 @@ const ChartBar: React.FC<ChartBarProps> = ({
       zoom: {
         enabled: false,
       },
+      foreColor: color[300],
     },
     plotOptions: {
       bar: {
         columnWidth: "45%",
-        distributed: true,
+        distributed: false,
       },
+    },
+    grid: {
+      show: false,
     },
     dataLabels: {
       enabled: false,
     },
-    legend: {
-      show: false,
+    tooltip: {
+      enabled: false,
     },
     xaxis: {
+      type: dataType,
+      axisBorder: {
+        color: color[600],
+      },
+      axisTicks: {
+        color: color[600],
+      },
       categories: dataOfChart.categories,
     },
   };
@@ -62,6 +86,9 @@ const ChartBar: React.FC<ChartBarProps> = ({
   const lengthOfSeries = dataOfChart.series[0]?.data?.length;
 
   if (!lengthOfCategories || !lengthOfSeries) return <></>;
+
+  console.log("dataOfChart")
+  console.log(dataOfChart)
 
   return (
     <>
